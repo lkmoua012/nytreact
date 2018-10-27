@@ -1,26 +1,60 @@
 import React from 'react';
+import axios from 'axios';
 import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+
+const apiURL = "https://api.nytimes.com/svc/";
+let specialtyURL = "search/v2/articlesearch.json?q=";
 
 export default class SearchCard extends React.Component {
 
-    state = {
-        searchTerm: "Obama",
-        startYear: "2010",
-        endYear: "2010",
-        articles: []
+    constructor(props) {
+        super(props);
+        this.state = {
+            searchTerm: "Trump",
+            startYear: "20100101",
+            endYear: "20101231",
+            apiKey: "5c4b21e061b04f539a374a1b43ad7834",
+            articles: [],
+            searchType: "articles"
+        };
     };
 
     handleFormSubmit = event => {
         event.preventDefault();
-        console.log("Hello");
+        // DEBUG
+        // console.log("Hello World");
         // Use this.state and pass them through an API call, return articles into an array.
-    }
+    };
 
     handleInputChange = event => {
         const { name, value } = event.target;
         this.setState({
             [name]: value
         });
+    };
+
+    getArticle = () => {
+        axios
+            .get(
+                apiURL +
+                specialtyURL +
+                this.state.searchTerm +
+                "&api-key=" +
+                this.state.apiKey
+            )
+            .then(response => {
+                var results;
+                console.log('response', response);
+                if (this.state.searchType === "articles") {
+                    results = response.data.response.docs;
+                    if (response.data.response.docs.length === 0) {
+                        results = [
+                            { headline: { main: "No Results" }, byline: { original: "" } }
+                        ];
+                    }
+                    this.setState({ articles: results });
+                }
+            });
     };
 
 
@@ -49,35 +83,35 @@ export default class SearchCard extends React.Component {
                             name="startYear"
                             id="exampleStart"
                         >
-                            <option value="2010">2010</option>
-                            <option value="2011">2011</option>
-                            <option value="2012">2012</option>
-                            <option value="2013">2013</option>
-                            <option value="2014">2014</option>
-                            <option value="2015">2015</option>
-                            <option value="2016">2016</option>
-                            <option value="2017">2017</option>
-                            <option value="2018">2018</option>
+                            <option value="20100101">2010</option>
+                            <option value="20110101">2011</option>
+                            <option value="20120101">2012</option>
+                            <option value="20130101">2013</option>
+                            <option value="20140101">2014</option>
+                            <option value="20150101">2015</option>
+                            <option value="20160101">2016</option>
+                            <option value="20170101">2017</option>
+                            <option value="20180101">2018</option>
                         </Input>
                     </FormGroup>
                     <FormGroup>
                         <Label for="exampleEnd">End Year</Label>
                         <Input
-                            value={this.state.startYear}
+                            value={this.state.endYear}
                             onChange={this.handleInputChange}
                             type="select"
                             name="endYear"
                             id="exampleEnd"
                         >
-                            <option value="2010">2010</option>
-                            <option value="2011">2011</option>
-                            <option value="2012">2012</option>
-                            <option value="2013">2013</option>
-                            <option value="2014">2014</option>
-                            <option value="2015">2015</option>
-                            <option value="2016">2016</option>
-                            <option value="2017">2017</option>
-                            <option value="2018">2018</option>
+                            <option value="20101231">2010</option>
+                            <option value="20111231">2011</option>
+                            <option value="20121231">2012</option>
+                            <option value="20131231">2013</option>
+                            <option value="20141231">2014</option>
+                            <option value="20151231">2015</option>
+                            <option value="20161231">2016</option>
+                            <option value="20171231">2017</option>
+                            <option value="20181231">2018</option>
                         </Input>
                     </FormGroup>
                 </Form>
