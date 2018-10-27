@@ -9,7 +9,7 @@ export default {
             responseType: 'stream'
         })
             .then(function (response) {
-                response.data.pipe(fs.createWriteStream('ada_lovelace.jpg'))
+                console.log(response.data);
             })
     }
 };

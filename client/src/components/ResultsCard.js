@@ -10,3 +10,5 @@ export default class ResultsCard extends React.Component {
         );
     }
 }
+
+// Have results card import stuff from SearchCard and return the array of articles.
