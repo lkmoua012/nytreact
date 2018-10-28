@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Container, Form, FormGroup, Label, Input, Button } from 'reactstrap';
 
 const apiURL = "https://api.nytimes.com/svc/";
-let specialtyURL = "search/v2/articlesearch.json?q=";
+let specialtyURL = "search/v2/articlesearch.json?fq=";
 
 export default class SearchCard extends React.Component {
 
@@ -24,6 +24,7 @@ export default class SearchCard extends React.Component {
         // DEBUG
         // console.log("Hello World");
         // Use this.state and pass them through an API call, return articles into an array.
+        this.getArticle();
     };
 
     handleInputChange = event => {
@@ -39,6 +40,10 @@ export default class SearchCard extends React.Component {
                 apiURL +
                 specialtyURL +
                 this.state.searchTerm +
+                "&begin_date=" +
+                this.state.startYear +
+                "&end_date=" +
+                this.state.endYear +
                 "&api-key=" +
                 this.state.apiKey
             )
@@ -53,8 +58,10 @@ export default class SearchCard extends React.Component {
                         ];
                     }
                     this.setState({ articles: results });
+                    console.log(results);
                 }
             });
+            
     };
 
 
